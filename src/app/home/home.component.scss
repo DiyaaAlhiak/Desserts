@@ -1,0 +1,96 @@
+
+
+
+
+.card{
+  border: none !important;
+  background-color: #fcf8f5 !important;
+img{
+  height: 10.5rem;
+}
+
+.Addcard{
+  margin: auto;
+
+  button.add{
+border: 1px solid #c54e39;
+background-color: #fcf8f5;
+border-radius: 30px;
+position: absolute;
+top: 58%;
+left: 25%;
+
+  }
+
+}
+.number{
+  position: absolute;
+  top: 58%;
+  left: 25%;
+  background-color: #c83b0e;
+  border-radius: 30px;
+  // width: 100%;
+  margin: auto;
+  width: 50%;
+  padding: 0.4rem;
+  display: flex;
+  justify-content: space-around;
+  color: aliceblue;
+  .plus,.minus{
+    border: 1px solid white;
+    border-radius: 50%;
+    color: #fcf8f5;
+    // width: 20%;
+    // height: 20px;
+    height: 27px;
+    background-color: #c83b0e;
+    font-size: 15px;
+  }
+}
+
+  .details{
+  margin-top: 1rem;
+  p.dessert-nam{
+    margin: 0;
+    font-size: 14px;
+    color: #9a9999;
+  }
+  span.price{
+    color: #c54e39;
+  }
+
+  }
+}
+div.cart{
+h4{
+  color: #b84118;
+}
+.purchases {
+    border-bottom: 1px solid rgb(214, 214, 214);
+
+  .classify-desserts{
+    p{
+      color: #b84118;
+      span.piece-price{
+        color: #9a9999;
+      }
+      span.total-pieces{
+        color: #6c6c6c;
+      }
+    }
+  }
+  .cansle {
+    border: 1px solid #7f7d7d;
+    padding: 4px;
+    border-radius: 50%;
+    color: #7f7d7d;
+    width: 20px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    cursor:pointer;
+  }
+}
+
+
+}

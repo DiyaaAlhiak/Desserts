@@ -1,0 +1,76 @@
+
+
+<div class="mt-5 desserts">
+  <h2>Desserts</h2>
+
+<div class="row mt-6">
+ <div class="col-md-7">
+  <div class="row">
+    <div class="col-md-4 mb-4 mt-4" *ngFor="let desserts of Desserts">
+
+      <div class="card ">
+        <img class="rounded " [src]='desserts.img'/>
+
+                 <div class="Addcard" *ngIf="!desserts.isVisible">
+                     <button class="btn add"(click)="toggleVisibility(desserts.id)" >Add To Card</button>
+
+                 </div>
+                 <div class="number" *ngIf="desserts.isVisible" >
+                  <button  class="minus" (click)="decrease(desserts.id)">-</button>
+                    <span (click)="toggleVisibility(desserts.id)">
+                           {{desserts.itemCount}}
+                    </span>
+                  <button class="plus" (click)="increase(desserts.id)" >+</button>
+
+                 </div>
+         <div class="details">
+          <p class="dessert-nam">{{desserts.DessertNam}}</p>
+          <h4 class="dessert-detail fs-6">{{desserts.DessertDetail}}</h4>
+          <span class="price">${{desserts.Price}}</span>
+         </div>
+    </div>
+    </div>
+  </div>
+
+ </div>
+
+<div class="col-md-4" >
+  <div class="cart rounded bg-white p-3">
+      <h4>Your Cart {{totalItemCount}} </h4>
+       <div class="empty-cart d-flex flex-column align-items-center  mt-4" *ngIf="!totalItemCount">
+         <img src="../../assets/img/download.png" class="w-50 " alt="">
+         <span class="text-black-50">Your added itemes will appear here</span>
+       </div>
+        <div class="row" *ngFor="let dessert of AllGetdesserts">
+          <div class="col-md-12" >
+            <div class="purchases d-flex align-items-center justify-content-center justify-content-sm-between mt-2 mb-2"*ngIf="totalItemCount" >
+
+              <div class="classify-desserts" >
+                  <h5 class="name">{{dessert.DessertNam}}</h5>
+                  <p>
+                    {{dessert.itemCount}}X
+                    <span class="piece-price mx-3">${{dessert.Price}}</span>
+                    <span class="total-pieces">${{dessert.Price * dessert.itemCount}}</span>
+                  </p>
+              </div>
+              <div class="cansle" >
+                <span (click)="cansleDessert(dessert.id)">X</span>
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+        </div>
+        <div  *ngIf="totalPrices" class=" border-bottom order-total d-flex align-items-center justify-content-center justify-content-sm-between mt-3 mb-3">
+          <h5>Order Total</h5>
+          <span class="fs-3">${{totalPrices}}</span>
+        </div>
+  </div>
+
+</div>
+
+</div>
+</div>

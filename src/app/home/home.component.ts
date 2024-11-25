@@ -93,24 +93,23 @@ export class HomeComponent {
       itemCount: 0,
     },
   ];
-
   constructor(private _DessertsService: DessertsService) {}
-
   ngOnInit(): void {
     localStorage.removeItem("DessertsData");
   }
 
-// Function for display state
   toggleVisibility(id: number): void {
     const dessert = this.Desserts.find(d => d.id === id);
     if (dessert) {
       dessert.isVisible = !dessert.isVisible;
       dessert.itemCount = 0;
+
+     this.removeDessertById(dessert.id)
     }
   }
 
 
-  // A function to increase the quantity
+
   increase(id: number): void {
     const dessert = this.Desserts.find(d => d.id === id);
     if (dessert) {
@@ -118,12 +117,10 @@ export class HomeComponent {
       this.addDessert(dessert);
       this.calculateTotalPrice()
       this.displayDesserts();
-    } else {
-      console.log('Dessert not found');
     }
   }
 
-  // A function to reduce the quantity
+
   decrease(id: number): void {
     const dessert = this.Desserts.find(d => d.id === id);
     if (dessert) {
@@ -146,7 +143,6 @@ export class HomeComponent {
     this.displayDesserts();
   }
 
-  //A function to add or update candy in localStorage
   addDessert(updatedDessert: any): void {
     const storedDesserts = localStorage.getItem('DessertsData');
     let desserts = storedDesserts ? JSON.parse(storedDesserts) : [];
@@ -161,7 +157,7 @@ export class HomeComponent {
     localStorage.setItem('DessertsData', JSON.stringify(desserts));
     console.log("Dessert added or updated in localStorage");
   }
-  // Function to delete candy from localStorage
+
   removeDessert(id: number): void {
     const storedDesserts = localStorage.getItem('DessertsData');
     if (storedDesserts) {
@@ -173,7 +169,7 @@ export class HomeComponent {
   }
 
 
-  // Function to display candy and update the total quantity
+
   displayDesserts(): void {
 this._DessertsService.getDessert().subscribe((res:any) =>{
   this.AllGetdesserts = res;
@@ -181,14 +177,6 @@ this._DessertsService.getDessert().subscribe((res:any) =>{
     (sum, dessert) => sum + dessert.itemCount, 0
   )
 })
-
-
-    // this._DessertsService.desserts$.subscribe((res) => {
-    //   this.AllGetdesserts = res;
-    //   this.totalItemCount = this.AllGetdesserts.reduce(
-    //     (sum, dessert) => sum + dessert.itemCount, 0
-    //   );
-    // });
 
     const storedDesserts = localStorage.getItem('DessertsData');
     if (storedDesserts) {
@@ -258,4 +246,36 @@ this._DessertsService.getDessert().subscribe((res:any) =>{
 
 
 
+removeDessertById(id: number): void {
+  const storedDesserts = localStorage.getItem('DessertsData');
+  if (storedDesserts) {
+    const desserts = JSON.parse(storedDesserts);
+    const dessertToRemove = desserts.find((dessert: { id: number }) => dessert.id === id);
+    if (dessertToRemove) {
+      this.totalItemCount -= dessertToRemove.itemCount;
+      const itemTotalPrice = dessertToRemove.itemCount * dessertToRemove.Price;
+      this.totalPrices = (
+        parseFloat(this.totalPrices) - itemTotalPrice
+      ).toFixed(2);
+      const dessertInUI = this.Desserts.find((d) => d.id === id);
+      if (dessertInUI) {
+        dessertInUI.itemCount = 0;
+      }
+      const updatedDesserts = desserts.filter((dessert: { id: number }) => dessert.id !== id);
+      localStorage.setItem('DessertsData', JSON.stringify(updatedDesserts));
+      this.AllGetdesserts = updatedDesserts;
+      localStorage.setItem('totalPrices', this.totalPrices);
+    }
+  }
 }
+
+}
+
+
+
+
+
+
+
+
+

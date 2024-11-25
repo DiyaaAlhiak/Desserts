@@ -54,7 +54,7 @@
                   </p>
               </div>
               <div class="cansle" >
-                <span (click)="cansleDessert(dessert.id)">X</span>
+                <span >X</span>
               </div>
 
 
@@ -64,9 +64,13 @@
           </div>
 
         </div>
-        <div  *ngIf="totalPrices" class=" border-bottom order-total d-flex align-items-center justify-content-center justify-content-sm-between mt-3 mb-3">
+        <div  *ngIf="totalItemCount" class=" border-bottom order-total d-flex align-items-center justify-content-center justify-content-sm-between mt-3 mb-3">
           <h5>Order Total</h5>
           <span class="fs-3">${{totalPrices}}</span>
+        </div>
+        <div class="confirm-crder d-flex justify-content-center w-100" *ngIf="totalItemCount">
+          <button routerLink="/cart-page" >Confirm Order</button>
+
         </div>
   </div>
 

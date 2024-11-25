@@ -9,8 +9,7 @@ import { DessertsService } from './services/desserts.service';
 export class HomeComponent {
   totalItemCount: number = 0;
   AllGetdesserts: any[] = [];
-  isButton = true;
-  totalPrices =""
+  totalPrices = ''
   Desserts = [
     {
       id: 1,
@@ -99,7 +98,6 @@ export class HomeComponent {
 
   ngOnInit(): void {
     localStorage.removeItem("DessertsData");
-    this.calculateTotalPrice()
   }
 
 // Function for display state
@@ -110,6 +108,7 @@ export class HomeComponent {
       dessert.itemCount = 0;
     }
   }
+
 
   // A function to increase the quantity
   increase(id: number): void {
@@ -126,12 +125,12 @@ export class HomeComponent {
 
   // A function to reduce the quantity
   decrease(id: number): void {
-
     const dessert = this.Desserts.find(d => d.id === id);
     if (dessert) {
       if (dessert.itemCount > 1) {
         dessert.itemCount--;
         this.addDessert(dessert);
+        this.DecreaseTotalPrice(dessert.id)
       } else {
         this.removeDessert(id);
         this.toggleVisibility(id);
@@ -162,7 +161,6 @@ export class HomeComponent {
     localStorage.setItem('DessertsData', JSON.stringify(desserts));
     console.log("Dessert added or updated in localStorage");
   }
-
   // Function to delete candy from localStorage
   removeDessert(id: number): void {
     const storedDesserts = localStorage.getItem('DessertsData');
@@ -174,34 +172,23 @@ export class HomeComponent {
     }
   }
 
-  cansleDessert(id: any): void {
-
-    const storedDesserts = localStorage.getItem('DessertsData');
-    if (storedDesserts) {
-      let desserts = JSON.parse(storedDesserts);
-
-      desserts = desserts.filter((dessert: { id: any }) => dessert.id !== id);
-
-      localStorage.setItem('DessertsData', JSON.stringify(desserts));
-
-      console.log(`Dessert with ID ${id} has been removed from localStorage.`);
-    } else {
-      console.log('No desserts found in localStorage.');
-    }
-
-
-    this.displayDesserts();
-    this.totalItemCount = 0
-  }
 
   // Function to display candy and update the total quantity
   displayDesserts(): void {
-    this._DessertsService.desserts$.subscribe((res) => {
-      this.AllGetdesserts = res;
-      this.totalItemCount = this.AllGetdesserts.reduce(
-        (sum, dessert) => sum + dessert.itemCount, 0
-      );
-    });
+this._DessertsService.getDessert().subscribe((res:any) =>{
+  this.AllGetdesserts = res;
+  this.totalItemCount = this.AllGetdesserts.reduce(
+    (sum, dessert) => sum + dessert.itemCount, 0
+  )
+})
+
+
+    // this._DessertsService.desserts$.subscribe((res) => {
+    //   this.AllGetdesserts = res;
+    //   this.totalItemCount = this.AllGetdesserts.reduce(
+    //     (sum, dessert) => sum + dessert.itemCount, 0
+    //   );
+    // });
 
     const storedDesserts = localStorage.getItem('DessertsData');
     if (storedDesserts) {
@@ -227,25 +214,48 @@ export class HomeComponent {
     }
   }
 
-
-
-
   calculateTotalPrice(): number {
     const storedDesserts = localStorage.getItem('DessertsData');
     if (storedDesserts) {
       const desserts = JSON.parse(storedDesserts);
       const totalPrice = desserts.reduce(
         (sum: number, dessert: { itemCount: number; Price: number }) =>
-          sum + (dessert.itemCount * dessert.Price),
+          sum + dessert.itemCount * dessert.Price,
         0
       );
-      this.totalPrices = totalPrice
-      console.log(`Total Price: $${totalPrice.toFixed(2)}`);
+
+      this.totalPrices = totalPrice;
+      localStorage.setItem('totalPrices', JSON.stringify(this.totalPrices));
       return totalPrice;
     } else {
       console.log('No desserts found in localStorage.');
       return 0;
     }
   }
+
+  DecreaseTotalPrice(id: number): void {
+    const storedDesserts = localStorage.getItem('DessertsData');
+    const totalPrices = localStorage.getItem('totalPrices');
+    let totalPricesNumber = totalPrices ? Number(totalPrices) : 0;
+    if (storedDesserts) {
+      const desserts = JSON.parse(storedDesserts);
+      const dessert = desserts.find((d: { id: number }) => d.id === id);
+      if (dessert) {
+        if (dessert.itemCount > 1) {
+          dessert.itemCount--;
+          totalPricesNumber -= dessert.Price;
+        } else {
+          desserts.splice(desserts.indexOf(dessert), 0);
+          totalPricesNumber -= dessert.Price;
+        }
+        localStorage.setItem('DessertsData', JSON.stringify(desserts));
+        localStorage.setItem('totalPrices', totalPricesNumber.toString());
+        this.AllGetdesserts = desserts;
+        this.totalPrices = totalPricesNumber.toString();
+      }
+    }
+  }
+
+
 
 }

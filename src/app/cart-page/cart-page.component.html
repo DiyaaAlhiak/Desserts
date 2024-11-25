@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-md-6 m-auto mt-5 ">
+    <div class="card border border-0 rounded p-4">
+      <h2 class="mt-5">oreder Confirmd</h2>
+      <p class="fs-6 text-black-50">We hope you enjoy food!</p>
+      <div class="order-list" *ngFor="let desserts of Alldesserts">
+        <div class="dessert d-flex justify-content-between align-items-center">
+                 <div class="d-flex align-items-center">
+                  <img class="img-dessert" src="{{desserts.img}}" alt="">
+
+                  <div class="piece-price mx-4">
+                    <h5 class="name-dessert">{{desserts.DessertNam}}</h5>
+                    <div class="number-price">
+                      <span class="number-dessert" >{{desserts.itemCount}}X</span>
+                      <span  class="price-dessert mx-4">${{desserts.Price}}</span>
+                    </div>
+                  </div>
+                 </div>
+
+              <div class="total-price">
+                <h4 class="fs-5">${{desserts.itemCount * desserts.Price}} </h4>
+              </div>
+        </div>
+
+  </div>
+  <div   class="  order-total d-flex align-items-center justify-content-center justify-content-sm-between mt-3 mb-3">
+    <h5>Order Total</h5>
+    <span class="fs-3">${{AlltotalPrice}}</span>
+  </div>
+  <div class="confirm-crder d-flex justify-content-center w-100" >
+    <button  >Confirm Order</button>
+
+  </div>
+</div>
